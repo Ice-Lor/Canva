@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò chơi Ô chữ - Chủ đề Giao thông Vận tải</title>
+    <meta name="description" content="Trò chơi giải ô chữ trực tuyến tương tác với từ khóa ẩn chủ đề Giao thông Vận tải tại Việt Nam. Thiết kế cao cấp, tối ưu UX cho gõ tiếng Việt.">
+    <!-- Nạp phông chữ Inter từ Google Fonts để mang lại trải nghiệm typography hiện đại, cao cấp -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Liên kết tệp định dạng CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Phần tiêu đề trang web sử dụng màu sắc nhấn Sky-blue -->
+    <header class="app-header">
+        <div class="header-content">
+            <h1>Trò Chơi Ô Chữ</h1>
+            <p class="subtitle">Chủ đề: Giao thông & Vận tải Việt Nam</p>
+        </div>
+        <!-- Bộ đếm thời gian thực của trò chơi -->
+        <div class="timer-container">
+            <span class="timer-icon">⏱️</span>
+            <span id="timer-display">00:00</span>
+        </div>
+    </header>
+
+    <!-- Khu vực nội dung chính của trò chơi -->
+    <main class="app-main">
+        <!-- Vùng chứa bảng lưới ô chữ (Sẽ được tạo động bằng JavaScript) -->
+        <section class="grid-section">
+            <div class="grid-wrapper">
+                <div id="crossword-grid" class="crossword-grid" role="grid" aria-label="Bảng ô chữ">
+                    <!-- Các hàng và ô chữ sẽ được thêm tự động tại đây -->
+                </div>
+            </div>
+            <div class="grid-instructions">
+                <p>💡 <strong>Mẹo:</strong> Sử dụng phím mũi tên để di chuyển. Từ khóa dọc đặc biệt nằm ở ô màu nổi bật.</p>
+            </div>
+        </section>
+
+        <!-- Vùng chứa danh sách các câu hỏi gợi ý (Clues) -->
+        <section class="clues-section">
+            <div class="clues-header">
+                <h2>Câu hỏi gợi ý</h2>
+                <span class="clues-count">9 từ khóa ngang</span>
+            </div>
+            <ol id="clues-list" class="clues-list">
+                <!-- Danh sách câu hỏi sẽ được render tự động qua JavaScript -->
+            </ol>
+        </section>
+    </main>
+
+    <!-- Footer chứa nút chức năng gỡ lỗi (Debug Mode) -->
+    <footer class="app-footer">
+        <button id="btn-debug-solve" class="btn-debug" title="Điền toàn bộ đáp án chính xác để kiểm tra trò chơi">
+            ⚡ Solve All (Debug)
+        </button>
+    </footer>
+
+    <!-- Khu vực hoạt họa đáy trang web: Bãi cảng biển logistics sử dụng hình ảnh thực tế chất lượng cao -->
+    <!-- Gồm: Cần cẩu tĩnh/động, 5 container loại 1, 3 container loại 2 và các xe container di chuyển đúng chiều tiến về phía trước -->
+    <div class="seaport-assets-container" aria-hidden="true">
+        <!-- Đường nền/cầu cảng logistics -->
+        <div class="seaport-ground"></div>
+        
+        <!-- 5 container loại 1 (Container.png) đứng yên rải rác -->
+        <div class="port-asset static-container stack-1">
+            <img src="Image/Container.png" alt="Container tĩnh" loading="lazy">
+        </div>
+        <div class="port-asset static-container stack-2">
+            <img src="Image/Container.png" alt="Container tĩnh" loading="lazy">
+        </div>
+        <div class="port-asset static-container stack-3">
+            <img src="Image/Container.png" alt="Container tĩnh" loading="lazy">
+        </div>
+        <div class="port-asset static-container stack-4">
+            <img src="Image/Container.png" alt="Container tĩnh" loading="lazy">
+        </div>
+        <div class="port-asset static-container stack-5">
+            <img src="Image/Container.png" alt="Container tĩnh" loading="lazy">
+        </div>
+
+        <!-- 3 container loại 2 (Container_2.png) bổ sung để bãi cảng thêm phong phú -->
+        <div class="port-asset static-container stack-type2-1">
+            <img src="Image/Container_2.png" alt="Container loại 2" loading="lazy">
+        </div>
+        <div class="port-asset static-container stack-type2-2">
+            <img src="Image/Container_2.png" alt="Container loại 2" loading="lazy">
+        </div>
+        <div class="port-asset static-container stack-type2-3">
+            <img src="Image/Container_2.png" alt="Container loại 2" loading="lazy">
+        </div>
+
+        <!-- 2 Cần cẩu tĩnh (file PNG) bố trí ở vị trí cố định bên trái và bên phải -->
+        <div class="port-asset static-crane crane-pos-left">
+            <img src="Image/Cần_cẩu.png" alt="Cần cẩu tĩnh" loading="lazy">
+        </div>
+        <div class="port-asset static-crane crane-pos-right">
+            <img src="Image/Cần_cẩu.png" alt="Cần cẩu tĩnh" loading="lazy">
+        </div>
+
+        <!-- 1 Cần cẩu hoạt động (file GIF) đặt ở khu vực trung tâm giữa bãi cảng -->
+        <div class="port-asset active-crane-gif">
+            <img src="Image/Cần_cẩu.gif" alt="Cần cẩu hoạt động" loading="lazy">
+        </div>
+
+        <!-- Xe container số 1 di chuyển từ trái sang phải (áp dụng lật scaleX(-1) để quay đầu xe sang phải tiến về phía trước) -->
+        <div class="port-asset moving-truck truck-lane-1">
+            <img src="Image/Xe_Container.png" alt="Xe container di chuyển" class="truck-facing-right" loading="lazy">
+        </div>
+
+        <!-- Xe container số 2 di chuyển từ phải sang trái (giữ nguyên scaleX(1) do ảnh gốc hướng trái để xe tiến về phía trước) -->
+        <div class="port-asset moving-truck truck-lane-2">
+            <img src="Image/Xe_Container.png" alt="Xe container di chuyển" class="truck-facing-left" loading="lazy">
+        </div>
+    </div>
+
+    <!-- Màn hình Modal chúc mừng hiển thị khi người dùng hoàn thành toàn bộ ô chữ -->
+    <div id="victory-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="trophy-icon">🏆</div>
+                <h2 id="modal-title">Chúc Mừng!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Bạn đã xuất sắc giải mã toàn bộ ô chữ và tìm ra từ khóa ẩn:</p>
+                <div class="keyword-reveal">GIAO THÔNG</div>
+                <div class="stats-box">
+                    <span class="stats-label">Thời gian hoàn thành:</span>
+                    <span id="final-time" class="stats-value">00:00</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-retry" class="btn-primary">🔄 Chơi lại ngay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nạp tệp mã logic JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

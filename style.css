@@ -1,0 +1,792 @@
+/* ==========================================================================
+   HỆ THỐNG BIẾN THIẾT KẾ (DESIGN TOKENS)
+   ========================================================================== */
+:root {
+    /* Tông màu nhấn Sky-blue (Header & Focus) */
+    --color-sky-primary: #0284c7;
+    --color-sky-light: #38bdf8;
+    --color-sky-gradient: linear-gradient(135deg, rgba(2, 132, 199, 0.95) 0%, rgba(56, 189, 248, 0.95) 100%);
+    --color-sky-bg: #e0f2fe;
+
+    /* Tông nền tối sang trọng cho Lưới (Dark Theme Grid) */
+    --color-grid-bg: rgba(15, 23, 42, 0.85); /* Nền bán trong suốt để ngắm cảnh biển */
+    --color-cell-empty: #1e293b;
+    --color-cell-border: #334155;
+    --color-cell-text: #f8fafc;
+
+    /* Màu sắc đặc biệt cho Cột từ khóa (Keyword Column) */
+    --color-keyword-bg: #f59e0b;
+    --color-keyword-text: #ffffff;
+    --color-keyword-border: #d97706;
+
+    /* Các màu sắc trạng thái */
+    --color-success-bg: #16a34a;
+    --color-success-border: #22c55e;
+    --color-row-highlight: rgba(56, 189, 248, 0.2);
+    --color-clue-active: #f0f9ff;
+    --color-clue-hover: #f1f5f9;
+
+    /* Văn bản chung */
+    --color-text-main: #0f172a;
+    --color-text-muted: #64748b;
+
+    /* Đổ bóng & Chuyển động */
+    --shadow-premium: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+    --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   RESET & KHÓA CUỘN TRANG (NON-SCROLLABLE 100VH LAYOUT)
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Cấm tuyệt đối cuộn toàn trang theo yêu cầu */
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    /* Tích hợp hình ảnh cảng biển logistics cao cấp kèm lớp phủ mờ tối sang trọng */
+    background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.88)), 
+                url('Image/seaport_bg.png') no-repeat center center / cover;
+    color: var(--color-text-main);
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tùy chỉnh thanh cuộn nội bộ đẹp mắt */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(2, 132, 199, 0.3);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(2, 132, 199, 0.6);
+}
+
+/* ==========================================================================
+   HEADER TRÒ CHƠI (GỌN GÀNG, TIẾT KIỆM KHÔNG GIAN DỌC)
+   ========================================================================== */
+.app-header {
+    background: var(--color-sky-gradient);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px; /* Giới hạn chiều cao cố định */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-content {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.app-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.app-header .subtitle {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    font-weight: 500;
+    display: none; /* Ẩn bớt trên mobile siêu nhỏ */
+}
+
+@media (min-width: 768px) {
+    .app-header .subtitle {
+        display: inline;
+    }
+}
+
+/* Khu vực đồng hồ đếm thời gian */
+.timer-container {
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(4px);
+    padding: 0.25rem 0.8rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.timer-icon {
+    animation: pulse-slow 2s infinite;
+}
+
+/* ==========================================================================
+   KHU VỰC CHÍNH (MAIN LAYOUT - CHIA CỘT NGANG TẬN DỤNG CHIỀU RỘNG)
+   ========================================================================== */
+.app-main {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 1rem;
+    height: calc(100vh - 64px); /* Chiều cao chiếm trọn phần còn lại của màn hình */
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 1rem;
+    overflow: hidden; /* Cấm tràn nội dung */
+}
+
+/* Đẩy mạnh chiều ngang trên các màn hình tiêu chuẩn để kéo các thành phần lên */
+@media (min-width: 1024px) {
+    .app-main {
+        grid-template-columns: 1.35fr 1fr;
+        grid-template-rows: 1fr;
+        padding: 1.25rem 1.5rem;
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 1400px) {
+    .app-main {
+        grid-template-columns: 1.45fr 1fr;
+    }
+}
+
+/* ==========================================================================
+   BẢNG LƯỚI Ô CHỮ (CỘT BÊN TRÁI)
+   ========================================================================== */
+.grid-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+
+.grid-wrapper {
+    background-color: var(--color-grid-bg);
+    backdrop-filter: blur(12px);
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-premium);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 100%;
+    max-height: calc(100% - 30px); /* Dành không gian cho dòng hướng dẫn bên dưới */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto; /* Cho phép cuộn nhẹ nội bộ nếu màn hình quá chật */
+}
+
+/* Lưới chính xác 17 cột x 9 hàng */
+.crossword-grid {
+    display: grid;
+    /* Thiết lập kích thước ô linh hoạt để bảo đảm không bao giờ vỡ khung */
+    grid-template-columns: repeat(17, min(34px, calc((100vw - 4rem) / 17)));
+    grid-template-rows: repeat(9, min(34px, calc((100vh - 15rem) / 9)));
+    gap: 3px;
+    justify-content: center;
+}
+
+@media (min-width: 1024px) {
+    .crossword-grid {
+        grid-template-columns: repeat(17, min(36px, calc((55vw - 4rem) / 17)));
+        grid-template-rows: repeat(9, min(36px, calc((100vh - 12rem) / 9)));
+        gap: 4px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .crossword-grid {
+        grid-template-columns: repeat(17, 38px);
+        grid-template-rows: repeat(9, 38px);
+        gap: 5px;
+    }
+}
+
+/* Thiết kế cho từng ô nhập liệu */
+.crossword-cell {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-cell-empty);
+    border: 1px solid var(--color-cell-border);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-cell-text);
+    transition: var(--transition-smooth);
+    outline: none;
+    cursor: pointer;
+    caret-color: var(--color-sky-light);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
+@media (min-width: 1024px) {
+    .crossword-cell {
+        font-size: 1.1rem;
+        border-radius: 6px;
+        border-width: 2px;
+    }
+}
+
+/* Các ô rỗng không sử dụng */
+.crossword-cell.disabled {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Hiệu ứng khi ô đang được focus gõ chữ */
+.crossword-cell:focus {
+    border-color: var(--color-sky-light);
+    background-color: #2563eb;
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+    z-index: 10;
+}
+
+/* Cột từ khóa dọc đặc biệt (Cột số 8) */
+.crossword-cell.keyword-column {
+    background-color: var(--color-keyword-bg);
+    border-color: var(--color-keyword-border);
+    color: var(--color-keyword-text);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.crossword-cell.keyword-column:focus {
+    background-color: #f59e0b;
+    border-color: #ffffff;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.9);
+}
+
+/* Hàng đang được đánh dấu (Highlight) */
+.crossword-cell.row-highlight:not(:focus):not(.keyword-column):not(.success) {
+    background-color: rgba(51, 65, 85, 0.9);
+    border-color: #475569;
+}
+
+/* Hiệu ứng trả lời đúng */
+.crossword-cell.success {
+    background-color: var(--color-success-bg);
+    border-color: var(--color-success-border);
+    color: #ffffff;
+    animation: success-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Gợi ý / Mẹo nhỏ dưới bảng lưới */
+.grid-instructions {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    height: 20px;
+}
+
+/* ==========================================================================
+   DANH SÁCH CÂU HỎI GỢI Ý (CỘT BÊN PHẢI - CUỘN ĐỘC LẬP)
+   ========================================================================== */
+.clues-section {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 1.25rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-premium);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden; /* Cấm container ngoài cuộn */
+}
+
+.clues-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+    flex-shrink: 0;
+}
+
+.clues-header h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-sky-primary);
+}
+
+.clues-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background-color: var(--color-sky-bg);
+    color: var(--color-sky-primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+}
+
+/* Vùng danh sách tự động cuộn nội bộ mượt mà */
+.clues-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    overflow-y: auto; /* Thanh cuộn độc lập ngăn tràn trang */
+    flex: 1;
+    padding-right: 0.4rem;
+}
+
+.clue-item {
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.4rem;
+    border-left: 4px solid transparent;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+    border: 1px solid #f1f5f9;
+}
+
+.clue-number {
+    font-weight: 700;
+    color: var(--color-text-muted);
+    background-color: #f1f5f9;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    transition: var(--transition-smooth);
+}
+
+.clue-text {
+    flex: 1;
+    color: var(--color-text-main);
+    line-height: 1.35;
+}
+
+.clue-item:hover {
+    background-color: var(--color-clue-hover);
+    border-color: #e2e8f0;
+}
+
+.clue-item.active {
+    background-color: var(--color-clue-active);
+    border-left-color: var(--color-sky-primary);
+    border-top-color: var(--color-sky-bg);
+    border-right-color: var(--color-sky-bg);
+    border-bottom-color: var(--color-sky-bg);
+    box-shadow: 0 2px 4px rgba(2, 132, 199, 0.05);
+}
+
+.clue-item.active .clue-number {
+    background-color: var(--color-sky-primary);
+    color: #ffffff;
+}
+
+.clue-item.solved {
+    background-color: #fcfcfc;
+    opacity: 0.85;
+}
+
+.clue-item.solved .clue-number {
+    background-color: var(--color-success-bg);
+    color: #ffffff;
+}
+
+.clue-item.solved .clue-text {
+    color: var(--color-success-bg);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   NÚT DEBUG MODE (ĐỊNH VỊ TUYỆT ĐỐI TIẾT KIỆM KHÔNG GIAN)
+   ========================================================================== */
+.app-footer {
+    display: none; /* Loại bỏ footer dòng mặc định để tránh đẩy layout */
+}
+
+/* Chuyển nút Debug lên góc trên cùng bên phải của Clues section hoặc góc dưới màn hình */
+.btn-debug {
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    background-color: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.35rem 0.7rem;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    z-index: 50;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.btn-debug:hover {
+    background-color: var(--color-sky-primary);
+    color: #ffffff;
+    border-color: var(--color-sky-light);
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   MÀN HÌNH CHÚC MỪNG CHIẾN THẮNG
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1rem;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 1.25rem;
+    max-width: 420px;
+    width: 100%;
+    padding: 1.75rem;
+    box-shadow: var(--shadow-modal);
+    text-align: center;
+    transform: scale(1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.modal-overlay.hidden .modal-content {
+    transform: scale(0.9);
+}
+
+.trophy-icon {
+    font-size: 3rem;
+    margin-bottom: 0.4rem;
+    animation: bounce-trophy 1.5s infinite alternate;
+}
+
+.modal-header h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #f59e0b;
+    margin-bottom: 0.5rem;
+}
+
+.modal-body p {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+}
+
+.keyword-reveal {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    color: #ffffff;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    padding: 0.6rem 1rem;
+    border-radius: 0.6rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.stats-box {
+    background-color: #f1f5f9;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stats-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.stats-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-sky-primary);
+}
+
+.btn-primary {
+    background: var(--color-sky-gradient);
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+@keyframes success-pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pulse-slow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.95); }
+}
+
+@keyframes bounce-trophy {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-6px); }
+}
+
+/* ==========================================================================
+   CƠ CHẾ LẬT MỞ ĐÁP ÁN ẨN & PIXEL ART EYE BUTTON
+   ========================================================================== */
+/* Trạng thái che khuất ký tự ban đầu */
+.crossword-cell.masked {
+    color: transparent !important;
+    text-shadow: none !important;
+    cursor: pointer;
+}
+
+/* Nút bấm ô vuông chứa biểu tượng mắt Pixel Art */
+.btn-reveal-square {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--color-sky-gradient);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+    transition: var(--transition-smooth);
+    padding: 0;
+    outline: none;
+}
+
+.btn-reveal-square:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.5);
+    background: linear-gradient(135deg, #0284c7 0%, #0284c7 100%);
+}
+
+.clue-item.solved .btn-reveal-square {
+    background: var(--color-success-bg);
+    box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
+    cursor: default;
+}
+
+.clue-item.solved .btn-reveal-square:hover {
+    transform: none;
+}
+
+/* Biểu tượng SVG Pixel Art Eye bảo đảm sắc nét tuyệt đối */
+.pixel-eye-svg {
+    width: 20px;
+    height: 16px;
+    display: block;
+    shape-rendering: crispEdges; /* Quan trọng: Hiển thị đúng chất pixel art góc cạnh */
+}
+
+/* Hiệu ứng lật mở từng ô chữ (Flip animation) */
+@keyframes flip-reveal {
+    0% {
+        transform: perspective(400px) rotateY(90deg) scale(1.1);
+    }
+    50% {
+        transform: perspective(400px) rotateY(-15deg) scale(1.05);
+    }
+    100% {
+        transform: perspective(400px) rotateY(0deg) scale(1);
+    }
+}
+
+.crossword-cell.flip {
+    animation: flip-reveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   HOẠT HỌA ĐÁY TRANG WEB (SEAPORT LOGISTICS ASSET ANIMATIONS)
+   ========================================================================== */
+/* Mục đích: Mô phỏng không gian trạm cảng biển logistics cao cấp bằng các hình ảnh thực tế
+   (Cần cẩu tĩnh/động, bãi container, xe container di chuyển ngược xuôi liên tục) */
+
+.seaport-assets-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 120px; /* Tăng độ cao vừa đủ để chứa trọn vẹn các cần cẩu lớn mà không bị che khuất */
+    z-index: 2; /* Đứng trên hình nền nhưng dưới các nút bấm và modal để bảo đảm thao tác */
+    pointer-events: none; /* Tránh cản trở thao tác chuột của người dùng */
+    overflow: hidden;
+}
+
+/* Nền bãi cảng logistics vững chãi */
+.seaport-ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: linear-gradient(to bottom, #334155, #1e293b);
+    border-top: 2px solid #475569;
+}
+
+/* Style chung cho mọi vật thể ảnh trong bãi cảng */
+.port-asset {
+    position: absolute;
+    will-change: transform;
+    pointer-events: none;
+}
+
+.port-asset img {
+    display: block;
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+}
+
+/* 1. Các cụm Container tĩnh rải rác mô phỏng bãi cảng sầm uất */
+.static-container {
+    height: 35px;
+    bottom: 12px;
+}
+/* Nhóm 5 Container loại 1 (Container.png) */
+.static-container.stack-1 { left: 2%; height: 38px; z-index: 1; }
+.static-container.stack-2 { left: 14%; height: 32px; z-index: 1; opacity: 0.95; }
+.static-container.stack-3 { right: 38%; height: 40px; z-index: 3; }
+.static-container.stack-4 { right: 18%; height: 35px; z-index: 1; }
+.static-container.stack-5 { right: 2%; height: 42px; z-index: 3; }
+
+/* Nhóm 3 Container loại 2 (Container_2.png) bổ sung */
+.static-container.stack-type2-1 { left: 26%; height: 45px; z-index: 2; }
+.static-container.stack-type2-2 { left: 36%; height: 38px; z-index: 1; opacity: 0.9; }
+.static-container.stack-type2-3 { right: 26%; height: 44px; z-index: 2; }
+
+/* 2. Hai Cần cẩu tĩnh (file PNG) cố định ở 2 bên */
+.static-crane {
+    bottom: 12px;
+    z-index: 1;
+}
+.static-crane.crane-pos-left {
+    left: 8%;
+    height: 105px;
+}
+.static-crane.crane-pos-right {
+    right: 8%;
+    height: 95px; /* Kích thước hơi khác để tạo chiều sâu tự nhiên */
+}
+
+/* 3. Một Cần cẩu hoạt động (file GIF) ở trung tâm bãi cảng */
+.active-crane-gif {
+    left: 46%;
+    bottom: 12px;
+    height: 110px;
+    z-index: 2;
+}
+
+/* 4. Hai Làn xe container di chuyển ngược xuôi */
+.moving-truck {
+    height: 48px; /* Tỉ lệ xe container cân đối và ấn tượng */
+}
+
+/* Xe số 1: Làn gần, chạy từ trái sang phải */
+.moving-truck.truck-lane-1 {
+    bottom: 6px;
+    z-index: 4;
+    left: -200px;
+    animation: truck-drive-right 20s linear infinite;
+}
+
+/* Xe số 2: Làn xa hơn, chạy từ phải sang trái */
+.moving-truck.truck-lane-2 {
+    bottom: 16px;
+    height: 42px; /* Làn xa nên kích thước xe hơi nhỏ lại tạo phối cảnh xa gần tuyệt đẹp */
+    z-index: 2;
+    right: -200px;
+    animation: truck-drive-left 22s linear infinite;
+    animation-delay: 3s; /* Xuất phát trễ để các luồng xe so le tự nhiên */
+}
+
+/* Ghi chú: Do ảnh gốc Xe_Container.png có hướng cabin quay sang trái:
+   - Để xe chạy từ trái sang phải tiến về phía trước, ta lật ảnh 180 độ: scaleX(-1).
+   - Để xe chạy từ phải sang trái tiến về phía trước, ta giữ nguyên: scaleX(1). */
+.truck-facing-right {
+    transform: scaleX(-1);
+}
+
+.truck-facing-left {
+    transform: scaleX(1);
+}
+
+/* Keyframes di chuyển cho xe container */
+@keyframes truck-drive-right {
+    0% { transform: translateX(-200px); }
+    100% { transform: translateX(calc(100vw + 200px)); }
+}
+
+@keyframes truck-drive-left {
+    0% { transform: translateX(200px); }
+    100% { transform: translateX(calc(-100vw - 200px)); }
+}
