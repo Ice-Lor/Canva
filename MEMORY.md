@@ -38,6 +38,7 @@ Dự án áp dụng nguyên tắc tối giản nhưng mang tính cao cấp (Prem
 - **Cột Từ khóa Nổi bật**: Cột dọc số 9 được gán lớp màu nền cam vàng rực rỡ (`#f59e0b`) giúp người chơi dễ dàng nhận diện mục tiêu chính.
 - **Số Thứ Tự Lưới Trực Quan**: Lớp `.grid-row-number` hiển thị các số từ 1 đến 9 ngay bên trái từ khóa với nền tối trong suốt, chữ số màu xanh da trời sang trọng, giúp người chơi dễ dàng định vị.
 - **Ước lượng Ký tự Thanh Lịch**: Lớp `.clue-length` gán màu sắc và font chữ đậm nét vừa phải cho chuỗi `(X chữ)` ở cuối mỗi câu hỏi.
+- **Bảo Toàn Hiển Thị Dấu Tiếng Việt**: Lớp `.crossword-cell` được bổ sung `padding-top: 2px` và `line-height: normal` để ngăn trình duyệt trên hệ điều hành Windows cắt mất phần đỉnh của các dấu xếp chồng (dấu sắc, huyền trên ký tự mũ như `Ố`, `Ể`, `Ẩ`).
 
 ### 3.3. `script.js` (Logic Điều khiển Lật mở Đáp án Ẩn)
 - **Render Lưới tự động**: Duyệt qua mảng cấu hình 9 hàng x 18 cột, tự động chèn các thẻ `<input>` (cho ô chữ) hoặc `<div>` (cho ô số thứ tự) vào lưới. Toàn bộ các ký tự đáp án được điền sẵn vào ô chữ nhưng bị khóa gõ (`readOnly = true`) và che khuất bằng lớp `.masked` (`color: transparent`).
