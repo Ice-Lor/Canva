@@ -63,7 +63,7 @@ Dự án áp dụng nguyên tắc tối giản nhưng mang tính cao cấp (Prem
 ## 6. Dải Hoạt họa Đáy Trang (Seaport Logistics Asset Animations)
 - **Mục tiêu**: Bổ sung yếu tố động (dynamic animation) theo chủ đề cảng biển logistics để tạo không gian sinh động, tránh cảm giác tĩnh lặng nhàm chán cho người chơi trong suốt quá trình giải đố.
 - **Cấu trúc Đồ họa Thực tế**: Thay thế hoàn toàn mã đồ họa SVG giả lập bằng hệ thống các **tệp hình ảnh thực tế chất lượng cao** được bố trí hài hòa:
-  - **Bãi Container Tĩnh**: Bố trí đan xen xen kẽ gồm **5 cụm container loại 1** (`Container.png`) và **3 cụm container loại 2** (`Container_2.png`) nằm rải rác ở khu vực đường nền, mô phỏng một bãi cảng tập kết hàng hóa đa dạng và tấp nập.
+  - **Bãi Container Tĩnh**: Các hình ảnh container tĩnh (`Container.png` và `Container_2.png`) **đã được gỡ bỏ hoàn toàn** theo yêu cầu trực tiếp từ người dùng nhằm giữ cho bãi cảng thông thoáng.
   - **Hai Cần cẩu Tĩnh (`Cần_cẩu.png`)**: Bố trí cố định ở 2 bên góc trái và phải với kích thước phối cảnh tinh tế tạo chiều sâu cho không gian.
   - **Một Cần cẩu Hoạt động (`Cần_cẩu.gif`)**: Đặt ở vị trí trung tâm bãi cảng, liên tục tái hiện hoạt họa tời bốc dỡ hàng hóa chân thực.
   - **Hai Làn Xe Container (`Xe_Container.png`)**: Di chuyển ngược xuôi liên tục trên làn đường cảng. Do hình ảnh gốc có hướng cabin quay sang trái, xe chạy từ trái sang phải được áp dụng lớp `truck-facing-right` (`transform: scaleX(-1)`) để quay đầu, trong khi xe chạy từ phải sang trái giữ nguyên lớp `truck-facing-left` (`transform: scaleX(1)`), bảo đảm cả hai luồng xe đều di chuyển tiến về phía trước một cách hợp lý và đẹp mắt.
