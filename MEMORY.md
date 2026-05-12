@@ -6,23 +6,23 @@ Tài liệu này ghi nhận lại toàn bộ kiến trúc, dữ liệu, quyết 
 
 ## 1. Thông tin chung về Trò chơi
 - **Mục tiêu**: Tạo ra một trò chơi giải ô chữ trực tuyến, có tính tương tác cao, hoạt động với dữ liệu tĩnh (hardcoded) thuộc chủ đề **Giao thông & Vận tải Việt Nam**.
-- **Cấu trúc Lưới**: Bảng lưới bao gồm chính xác **9 hàng ngang** và **17 cột dọc**.
-- **Từ khóa ẩn dọc**: Từ khóa đặc biệt **GIAOTHÔNG** (Giao thông) nằm thẳng hàng dọc hoàn hảo tại **Cột số 8** (1-based index).
+- **Cấu trúc Lưới**: Bảng lưới bao gồm chính xác **9 hàng ngang** và **18 cột dọc** (được mở rộng để hỗ trợ hiển thị số thứ tự hàng ngang ngay bên trong lưới).
+- **Từ khóa ẩn dọc**: Từ khóa đặc biệt **GIAOTHÔNG** (Giao thông) nằm thẳng hàng dọc hoàn hảo tại **Cột số 9** (1-based index).
 
 ## 2. Chi tiết Dữ liệu và Tọa độ Lưới (Puzzle Mapping)
-Toàn bộ khoảng trắng trong các từ khóa đều được loại bỏ theo đúng quy tắc game ô chữ. Các từ được căn chỉnh tọa độ cột bắt đầu (`startCol`) sao cho ký tự giao nhau rơi đúng vào Cột số 8:
+Toàn bộ khoảng trắng trong các từ khóa đều được loại bỏ theo đúng quy tắc game ô chữ. Các từ được căn chỉnh tọa độ cột bắt đầu (`startCol`) sao cho ký tự giao nhau rơi đúng vào Cột số 9. Ô ngay trước từ khóa (cột `startCol - 1`) được tận dụng để hiển thị số thứ tự hàng ngang (1-9):
 
-| Hàng | Đáp án | Chiều dài | Cột bắt đầu | Ký tự tại Cột 8 | Gợi ý (Clue) |
+| Hàng | Đáp án | Chiều dài | Cột bắt đầu | Ký tự tại Cột 9 | Gợi ý (Clue) kèm Ước lượng |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **1** | `GATÀU` | 5 | 8 | **G** | Nơi đón trả khách và bốc dỡ hàng hóa của ngành đường sắt. |
-| **2** | `ĐƯỜNGBIỂN` | 9 | 2 | **I** | Phương thức vận tải quốc tế chủ lực nhờ đường bờ biển dài của VN. |
-| **3** | `TÀUHỎA` | 6 | 3 | **A** | Phương tiện di chuyển chính trên tuyến đường sắt Bắc - Nam. |
-| **4** | `LOGISTICS` | 9 | 7 | **O** | Dịch vụ hậu cần kết nối các khâu vận tải và lưu kho hàng hóa. |
-| **5** | `THỦYNỘIĐỊA` | 10 | 8 | **T** | Ngành vận tải tận dụng hệ thống sông ngòi chằng chịt ở nước ta. |
-| **6** | `HÀNGHÓA` | 7 | 4 | **H** | Đối tượng cần bốc xếp, lưu kho và vận chuyển trong chuỗi cung ứng. |
-| **7** | `HÀNGKHÔNG` | 9 | 2 | **Ô** | Phương thức vận tải có tốc độ nhanh nhất nhưng chi phí cao. |
-| **8** | `VẬNTẢI` | 6 | 6 | **N** | Ngành kinh tế kỹ thuật đóng vai trò 'mạch máu' của đất nước. |
-| **9** | `ĐƯỜNGỐNG` | 8 | 1 | **G** | Loại hình vận tải chuyên dụng để di chuyển xăng, dầu và khí đốt. |
+| **1** | `GATÀU` | 5 | 9 | **G** | Nơi đón trả khách và bốc dỡ hàng hóa của ngành đường sắt. `(5 chữ)` |
+| **2** | `ĐƯỜNGBIỂN` | 9 | 3 | **I** | Phương thức vận tải quốc tế chủ lực nhờ đường bờ biển dài của VN. `(9 chữ)` |
+| **3** | `TÀUHỎA` | 6 | 4 | **A** | Phương tiện di chuyển chính trên tuyến đường sắt Bắc - Nam. `(6 chữ)` |
+| **4** | `LOGISTICS` | 9 | 8 | **O** | Dịch vụ hậu cần kết nối các khâu vận tải và lưu kho hàng hóa. `(9 chữ)` |
+| **5** | `THỦYNỘIĐỊA` | 10 | 9 | **T** | Ngành vận tải tận dụng hệ thống sông ngòi chằng chịt ở nước ta. `(10 chữ)` |
+| **6** | `HÀNGHÓA` | 7 | 5 | **H** | Đối tượng cần bốc xếp, lưu kho và vận chuyển trong chuỗi cung ứng. `(7 chữ)` |
+| **7** | `HÀNGKHÔNG` | 9 | 3 | **Ô** | Phương thức vận tải có tốc độ nhanh nhất nhưng chi phí cao. `(9 chữ)` |
+| **8** | `VẬNTẢI` | 6 | 7 | **N** | Ngành kinh tế kỹ thuật đóng vai trò 'mạch máu' của đất nước. `(6 chữ)` |
+| **9** | `ĐƯỜNGỐNG` | 8 | 2 | **G** | Loại hình vận tải chuyên dụng để di chuyển xăng, dầu và khí đốt. `(8 chữ)` |
 
 ## 3. Kiến trúc Mã nguồn và UI/UX
 Dự án áp dụng nguyên tắc tối giản nhưng mang tính cao cấp (Premium UI/UX) và phân tách mã nguồn thành 3 tệp độc lập:
@@ -35,11 +35,12 @@ Dự án áp dụng nguyên tắc tối giản nhưng mang tính cao cấp (Prem
 ### 3.2. `style.css` (Premium Design & Dark Theme)
 - **Hệ thống Design Tokens**: Định nghĩa đầy đủ các biến màu sắc, đổ bóng và chuyển động.
 - **Dark Theme Grid**: Bảng lưới được bọc trong container tối màu (`#0f172a`), các ô chữ có viền nổi bật, giúp làm nổi bật dải màu Sky-blue của Header và các màu trạng thái.
-- **Cột Từ khóa Nổi bật**: Cột dọc số 8 được gán lớp màu nền cam vàng rực rỡ (`#f59e0b`) giúp người chơi dễ dàng nhận diện mục tiêu chính.
-- **Responsive & Trượt ngang**: Hỗ trợ hiển thị mượt mà trên điện thoại di động nhờ tính năng trượt ngang tự động (`overflow-x: auto`) nếu màn hình quá nhỏ.
+- **Cột Từ khóa Nổi bật**: Cột dọc số 9 được gán lớp màu nền cam vàng rực rỡ (`#f59e0b`) giúp người chơi dễ dàng nhận diện mục tiêu chính.
+- **Số Thứ Tự Lưới Trực Quan**: Lớp `.grid-row-number` hiển thị các số từ 1 đến 9 ngay bên trái từ khóa với nền tối trong suốt, chữ số màu xanh da trời sang trọng, giúp người chơi dễ dàng định vị.
+- **Ước lượng Ký tự Thanh Lịch**: Lớp `.clue-length` gán màu sắc và font chữ đậm nét vừa phải cho chuỗi `(X chữ)` ở cuối mỗi câu hỏi.
 
 ### 3.3. `script.js` (Logic Điều khiển Lật mở Đáp án Ẩn)
-- **Render Lưới tự động**: Duyệt qua mảng cấu hình 9 hàng x 17 cột, tự động chèn các thẻ `<input>` vào lưới. Toàn bộ các ký tự đáp án được điền sẵn vào ô chữ nhưng bị khóa gõ (`readOnly = true`) và che khuất bằng lớp `.masked` (`color: transparent`).
+- **Render Lưới tự động**: Duyệt qua mảng cấu hình 9 hàng x 18 cột, tự động chèn các thẻ `<input>` (cho ô chữ) hoặc `<div>` (cho ô số thứ tự) vào lưới. Toàn bộ các ký tự đáp án được điền sẵn vào ô chữ nhưng bị khóa gõ (`readOnly = true`) và che khuất bằng lớp `.masked` (`color: transparent`).
 - **Tương tác hai chiều (Bi-directional Highlight)**: Focus vào ô chữ làm nổi bật câu hỏi gợi ý tương ứng bên dưới và ngược lại.
 - **Cơ chế Lật mở (Masked Reveal)**: Người chơi nhấp vào hàng chữ trên lưới hoặc nút biểu tượng con mắt pixel art bên cạnh gợi ý để gỡ bỏ lớp `.masked`, đồng thời áp dụng hiệu ứng lật 3D tuần tự (`staggered animation` qua `setTimeout`).
 - **Đồng hồ bấm giờ (Stopwatch)**: Tự động kích hoạt ngay khi người dùng lật mở hàng đầu tiên.

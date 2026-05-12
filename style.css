@@ -201,28 +201,28 @@ body {
     overflow: auto; /* Cho phép cuộn nhẹ nội bộ nếu màn hình quá chật */
 }
 
-/* Lưới chính xác 17 cột x 9 hàng */
+/* Lưới chính xác 18 cột x 9 hàng */
 .crossword-grid {
     display: grid;
     /* Thiết lập kích thước ô linh hoạt để bảo đảm không bao giờ vỡ khung */
-    grid-template-columns: repeat(17, min(34px, calc((100vw - 4rem) / 17)));
-    grid-template-rows: repeat(9, min(34px, calc((100vh - 15rem) / 9)));
+    grid-template-columns: repeat(18, min(32px, calc((100vw - 4rem) / 18)));
+    grid-template-rows: repeat(9, min(32px, calc((100vh - 15rem) / 9)));
     gap: 3px;
     justify-content: center;
 }
 
 @media (min-width: 1024px) {
     .crossword-grid {
-        grid-template-columns: repeat(17, min(36px, calc((55vw - 4rem) / 17)));
-        grid-template-rows: repeat(9, min(36px, calc((100vh - 12rem) / 9)));
+        grid-template-columns: repeat(18, min(34px, calc((55vw - 4rem) / 18)));
+        grid-template-rows: repeat(9, min(34px, calc((100vh - 12rem) / 9)));
         gap: 4px;
     }
 }
 
 @media (min-width: 1280px) {
     .crossword-grid {
-        grid-template-columns: repeat(17, 38px);
-        grid-template-rows: repeat(9, 38px);
+        grid-template-columns: repeat(18, 36px);
+        grid-template-rows: repeat(9, 36px);
         gap: 5px;
     }
 }
@@ -296,6 +296,30 @@ body {
     border-color: var(--color-success-border);
     color: #ffffff;
     animation: success-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Số thứ tự hàng ngang hiển thị trực tiếp trên lưới */
+.grid-row-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--color-sky-light);
+    background-color: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border-radius: 50%;
+    width: 85%;
+    height: 85%;
+    margin: auto;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    user-select: none;
+}
+
+@media (min-width: 1024px) {
+    .grid-row-number {
+        font-size: 0.95rem;
+    }
 }
 
 /* Gợi ý / Mẹo nhỏ dưới bảng lưới */
@@ -393,6 +417,14 @@ body {
     flex: 1;
     color: var(--color-text-main);
     line-height: 1.35;
+}
+
+.clue-length {
+    color: var(--color-sky-primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    opacity: 0.9;
+    white-space: nowrap;
 }
 
 .clue-item:hover {

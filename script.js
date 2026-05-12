@@ -8,21 +8,21 @@
 // Bảng dữ liệu gốc của trò chơi (Hardcoded Puzzle Data)
 // Đảm bảo chữ cái tại cột số 8 của tất cả các từ tạo thành hàng dọc "GIAOTHÔNG"
 const puzzleData = [
-    { answer: "GATÀU", clue: "Nơi đón trả khách và bốc dỡ hàng hóa của ngành đường sắt.", startCol: 8 },
-    { answer: "ĐƯỜNGBIỂN", clue: "Phương thức vận tải quốc tế chủ lực nhờ đường bờ biển dài của VN.", startCol: 2 },
-    { answer: "TÀUHỎA", clue: "Phương tiện di chuyển chính trên tuyến đường sắt Bắc - Nam.", startCol: 3 },
-    { answer: "LOGISTICS", clue: "Dịch vụ hậu cần kết nối các khâu vận tải và lưu kho hàng hóa.", startCol: 7 },
-    { answer: "THỦYNỘIĐỊA", clue: "Ngành vận tải tận dụng hệ thống sông ngòi chằng chịt ở nước ta.", startCol: 8 },
-    { answer: "HÀNGHÓA", clue: "Đối tượng cần bốc xếp, lưu kho và vận chuyển trong chuỗi cung ứng.", startCol: 4 },
-    { answer: "HÀNGKHÔNG", clue: "Phương thức vận tải có tốc độ nhanh nhất nhưng chi phí cao.", startCol: 2 },
-    { answer: "VẬNTẢI", clue: "Ngành kinh tế kỹ thuật đóng vai trò 'mạch máu' của đất nước.", startCol: 6 },
-    { answer: "ĐƯỜNGỐNG", clue: "Loại hình vận tải chuyên dụng để di chuyển xăng, dầu và khí đốt.", startCol: 1 }
+    { answer: "GATÀU", clue: "Nơi đón trả khách và bốc dỡ hàng hóa của ngành đường sắt.", startCol: 9 },
+    { answer: "ĐƯỜNGBIỂN", clue: "Phương thức vận tải quốc tế chủ lực nhờ đường bờ biển dài của VN.", startCol: 3 },
+    { answer: "TÀUHỎA", clue: "Phương tiện di chuyển chính trên tuyến đường sắt Bắc - Nam.", startCol: 4 },
+    { answer: "LOGISTICS", clue: "Dịch vụ hậu cần kết nối các khâu vận tải và lưu kho hàng hóa.", startCol: 8 },
+    { answer: "THỦYNỘIĐỊA", clue: "Ngành vận tải tận dụng hệ thống sông ngòi chằng chịt ở nước ta.", startCol: 9 },
+    { answer: "HÀNGHÓA", clue: "Đối tượng cần bốc xếp, lưu kho và vận chuyển trong chuỗi cung ứng.", startCol: 5 },
+    { answer: "HÀNGKHÔNG", clue: "Phương thức vận tải có tốc độ nhanh nhất nhưng chi phí cao.", startCol: 3 },
+    { answer: "VẬNTẢI", clue: "Ngành kinh tế kỹ thuật đóng vai trò 'mạch máu' của đất nước.", startCol: 7 },
+    { answer: "ĐƯỜNGỐNG", clue: "Loại hình vận tải chuyên dụng để di chuyển xăng, dầu và khí đốt.", startCol: 2 }
 ];
 
 // Cấu hình kích thước bảng lưới
 const GRID_ROWS = 9;
-const GRID_COLS = 17;
-const KEYWORD_COL = 8; // Cột dọc chứa từ khóa ẩn (1-based)
+const GRID_COLS = 18;
+const KEYWORD_COL = 9; // Cột dọc chứa từ khóa ẩn (1-based)
 
 // Các biến quản lý trạng thái trò chơi
 let timerInterval = null;
@@ -61,12 +61,11 @@ function renderGrid() {
         const endC = startC + wordLen - 1;
 
         for (let c = 1; c <= GRID_COLS; c++) {
-            const inputCell = document.createElement("input");
-            inputCell.type = "text";
-            inputCell.className = "crossword-cell";
-            
             // Kiểm tra xem ô (r, c) có thuộc từ khóa của hàng hiện tại không
             if (c >= startC && c <= endC) {
+                const inputCell = document.createElement("input");
+                inputCell.type = "text";
+                inputCell.className = "crossword-cell";
                 const charIndex = c - startC;
                 inputCell.dataset.row = r;
                 inputCell.dataset.col = c;
@@ -82,15 +81,23 @@ function renderGrid() {
                 if (c === KEYWORD_COL) {
                     inputCell.classList.add("keyword-column");
                 }
+                gridContainer.appendChild(inputCell);
+            } else if (c === startC - 1) {
+                // Ô ngay trước từ khóa dùng để hiển thị số thứ tự hàng ngang
+                const labelCell = document.createElement("div");
+                labelCell.className = "grid-row-number";
+                labelCell.textContent = r;
+                gridContainer.appendChild(labelCell);
             } else {
                 // Ô rỗng không sử dụng, bị ẩn đi
-                inputCell.classList.add("disabled");
+                const inputCell = document.createElement("input");
+                inputCell.type = "text";
+                inputCell.className = "crossword-cell disabled";
                 inputCell.disabled = true;
                 inputCell.setAttribute("aria-hidden", "true");
                 inputCell.tabIndex = -1;
+                gridContainer.appendChild(inputCell);
             }
-
-            gridContainer.appendChild(inputCell);
         }
     }
 }
@@ -127,9 +134,10 @@ function renderClues() {
         li.className = "clue-item";
         li.dataset.row = rowNum;
 
+        // Cấu trúc HTML của mỗi gợi ý, hiển thị rõ số lượng chữ (ký tự) của đáp án để hỗ trợ người chơi
         li.innerHTML = `
             <span class="clue-number">${rowNum}</span>
-            <span class="clue-text">${data.clue}</span>
+            <span class="clue-text">${data.clue} <strong class="clue-length">(${data.answer.length} chữ)</strong></span>
             <button class="btn-reveal-square" title="Mở đáp án hàng này" data-row="${rowNum}">
                 ${pixelEyeSvg}
             </button>
