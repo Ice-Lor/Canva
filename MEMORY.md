@@ -43,7 +43,7 @@ Dự án áp dụng nguyên tắc tối giản nhưng mang tính cao cấp (Prem
 ### 3.3. `script.js` (Logic Điều khiển Lật mở Đáp án Ẩn)
 - **Render Lưới tự động**: Duyệt qua mảng cấu hình 9 hàng x 18 cột, tự động chèn các thẻ `<input>` (cho ô chữ) hoặc `<div>` (cho ô số thứ tự) vào lưới. Toàn bộ các ký tự đáp án được điền sẵn vào ô chữ nhưng bị khóa gõ (`readOnly = true`) và che khuất bằng lớp `.masked` (`color: transparent`).
 - **Tương tác hai chiều (Bi-directional Highlight)**: Focus vào ô chữ làm nổi bật câu hỏi gợi ý tương ứng bên dưới và ngược lại.
-- **Cơ chế Lật mở (Masked Reveal)**: Người chơi nhấp vào hàng chữ trên lưới hoặc nút biểu tượng con mắt pixel art bên cạnh gợi ý để gỡ bỏ lớp `.masked`, đồng thời áp dụng hiệu ứng lật 3D tuần tự (`staggered animation` qua `setTimeout`).
+- **Cơ chế Lật mở và Đóng (Toggle Reveal/Hide)**: Người chơi nhấp vào hàng chữ trên lưới hoặc nút biểu tượng con mắt pixel art bên cạnh gợi ý. Nếu hàng đang ẩn, nó sẽ gỡ bỏ lớp `.masked` với hiệu ứng lật 3D tuần tự (`staggered animation` qua `setTimeout`). Nếu hàng đã được mở, việc bấm lại nút con mắt sẽ **đóng đáp án ngay lập tức** (thêm lại lớp `.masked`, gỡ bỏ class `.success` và `.flip`, đồng thời bỏ đánh dấu `.solved`), giúp người chơi phòng tránh lỗi lỡ tay hoặc muốn tự giải lại.
 - **Đồng hồ bấm giờ (Stopwatch)**: Tự động kích hoạt ngay khi người dùng lật mở hàng đầu tiên.
 - **Kiểm tra Điều kiện Chiến thắng**: Tự động đánh dấu hoàn thành hàng và kiểm tra khi toàn bộ 9 hàng đã được lật mở thành công.
 
@@ -56,6 +56,7 @@ Dự án áp dụng nguyên tắc tối giản nhưng mang tính cao cấp (Prem
 - **Ẩn Nội dung**: Ký tự được gán sẵn vào thuộc tính `.value` của thẻ input nhưng hoàn toàn vô hình nhờ lớp CSS `.masked` thiết lập màu chữ trong suốt (`transparent`).
 - **Nút Bấm Trực quan**: Mỗi mục câu hỏi gợi ý được đính kèm một nút bấm hình vuông `.btn-reveal-square` chứa biểu tượng **con mắt Pixel Art** (SVG `crispEdges`) được thiết kế tỉ mỉ, giúp người chơi dễ dàng nhắm trúng mục tiêu.
 - **Hiệu ứng Staggered 3D Flip**: Khi kích hoạt mở hàng, các ô chữ lần lượt thực hiện vòng quay 3D theo trục X (`@keyframes flip-reveal`) với độ trễ liên tiếp `80ms` giữa các ô, mang lại hiệu ứng thị giác vô cùng mãn nhãn và cao cấp.
+- **Cơ chế Đóng/Mở linh hoạt (Toggle)**: Để mang lại trải nghiệm tối ưu và tránh lỗi lỡ tay, khi người dùng nhấp lại vào biểu tượng con mắt hoặc hàng ô chữ đã mở, hệ thống sẽ thực hiện đóng đáp án ngay lập tức (ẩn chữ, loại bỏ các lớp `.success` và `.flip`, khôi phục lớp `.masked` cùng thuộc tính `readOnly = true`, đồng thời gỡ bỏ lớp `.solved` khỏi gợi ý). Người dùng vẫn có thể bấm mở lại đáp án bình thường vào bất kỳ lúc nào.
 - **Bảo tồn Logic Cũ**: Toàn bộ các hàm cũ xử lý gõ phím, di chuyển tiêu điểm hay debounce tiếng Việt vẫn được giữ lại trọn vẹn trong mã nguồn nhằm tuân thủ quy tắc không xóa code của dự án.
 
 ## 5. Chế độ Gỡ lỗi (Debug Mode)

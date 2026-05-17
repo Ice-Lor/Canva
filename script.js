@@ -168,8 +168,22 @@ function revealRow(rowNum) {
     const rowCells = Array.from(document.querySelectorAll(`.crossword-cell[data-row="${rowNum}"]`));
     const clueItem = document.querySelector(`.clue-item[data-row="${rowNum}"]`);
     
-    // Nếu hàng đã được lật mở rồi thì bỏ qua
-    if (rowCells[0] && !rowCells[0].classList.contains("masked")) return;
+    // Kiểm tra xem hàng có đang mở hoàn toàn không (không có ô nào chứa class "masked")
+    const isAlreadyRevealed = rowCells.length > 0 && rowCells.every(cell => !cell.classList.contains("masked"));
+
+    if (isAlreadyRevealed) {
+        // ĐÓNG ĐÁP ÁN NGAY LẬP TỨC (Ẩn chữ để phòng trường hợp lỡ tay bấm lộn)
+        rowCells.forEach(cell => {
+            cell.classList.add("masked");
+            cell.classList.remove("success", "flip");
+            cell.readOnly = true;
+        });
+        if (clueItem) {
+            clueItem.classList.remove("solved");
+        }
+        highlightRowAndClue(rowNum);
+        return;
+    }
 
     // Bắt đầu đồng hồ ngay khi lật mở hàng đầu tiên nếu chưa chạy
     if (!isTimerRunning) {
