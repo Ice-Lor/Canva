@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chiếc Nón Kỳ Diệu - Backroom Level 0</title>
+    <!-- Google Fonts: Nhập phông chữ Poppins (như trên Canva) và Space Mono cho phong cách cổ điển -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        /* --- DESIGN SYSTEM: BACKROOM LEVEL 0 THEME --- */
+        :root {
+            /* Tông màu vàng úa dán tường ẩm mốc đặc trưng */
+            --bg-base: #dfd5a5;
+            --bg-wallpaper: #d2c385;
+            --bg-panel: rgba(230, 222, 185, 0.65);
+            --bg-panel-solid: #eae3b9;
+            --text-main: #3d371d;
+            --text-muted: #5e5531;
+            --color-accent: #b0a158;
+            --color-glow: #fffaa0;
+            --cell-bg-hidden: #c2b57a;
+            --cell-bg-reveal: #fbf8e6;
+            --cell-border: #9b8d4e;
+            --btn-active: #eae2b5;
+            --btn-hover: #f3edd0;
+            --btn-disabled: rgba(180, 170, 120, 0.4);
+            /* Thay đổi phông chữ chính sang Poppins theo yêu cầu */
+            --font-main: 'Poppins', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            --shadow-soft: 0 8px 32px rgba(45, 41, 24, 0.12);
+            --shadow-inset: inset 0 2px 4px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Họa tiết sọc dọc mờ của giấy dán tường Backroom */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: var(--font-main);
+            background: 
+                linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 2px, transparent 2px),
+                var(--bg-base);
+            background-size: 24px 100%, 48px 100%;
+            color: var(--text-main);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Hiệu ứng đèn huỳnh quang nhấp nháy mờ ảo toàn bộ màn hình */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle, transparent 50%, rgba(0, 0, 0, 0.08) 100%);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* --- 2 BÓNG ĐÈN HUỲNH QUANG TRÊN TRẦN --- */
+        .ceiling-lights {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 12%;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .light-fixture {
+            width: 220px;
+            height: 10px;
+            background: #fbf8e6;
+            border: 1px solid var(--cell-border);
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            box-shadow: 
+                0 2px 25px rgba(255, 250, 160, 0.9), 
+                0 6px 45px rgba(255, 250, 160, 0.5);
+            animation: bulb-flicker 7s infinite alternate;
+            transition: all 0.1s ease;
+        }
+
+        /* Tạo độ lệch pha nhấp nháy giữa 2 đèn cho tự nhiên */
+        #light-2 {
+            animation-delay: 1.8s;
+        }
+
+        /* Animation chớp tắt đèn huỳnh quang giả lập môi trường backroom */
+        @keyframes bulb-flicker {
+            0%, 18%, 20%, 22%, 24%, 53%, 55%, 57%, 88%, 90%, 100% {
+                background: #fbf8e6;
+                box-shadow: 
+                    0 2px 25px rgba(255, 250, 160, 0.9), 
+                    0 6px 45px rgba(255, 250, 160, 0.5);
+                opacity: 1;
+            }
+            19%, 21%, 23%, 54%, 56%, 89% {
+                background: #b5aa76;
+                box-shadow: none;
+                opacity: 0.25;
+            }
+        }
+
+        /* --- 3 PHẦN MÀN HÌNH NGANG BẰNG NHAU --- */
+        .section {
+            height: 33.33vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 24px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Viền phân cách mềm mại giữa các phần */
+        .section:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            width: 90%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(155, 141, 78, 0.3) 50%, transparent);
+        }
+
+        /* --- PHẦN 1: CÂU HỎI & ĐIỀU HƯỚNG --- */
+        .section-top {
+            flex-direction: column;
+            justify-content: space-between;
+            padding-top: 25px; /* Chừa không gian cho đèn trần */
+        }
+
+        /* Thanh tiêu đề & điều khiển câu hỏi */
+        .header-controls {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .game-title {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(255, 250, 160, 0.4);
+            animation: text-flicker 5s infinite alternate;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-nav {
+            background: var(--bg-panel-solid);
+            border: 1px solid var(--cell-border);
+            color: var(--text-main);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-inset), 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            transform: translateY(-1px);
+            background: var(--btn-hover);
+            box-shadow: var(--shadow-inset), 0 4px 8px rgba(0,0,0,0.08);
+        }
+
+        .btn-nav:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Hộp hiển thị câu hỏi */
+        .question-box {
+            background: var(--bg-panel);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(155, 141, 78, 0.35);
+            border-radius: 20px;
+            padding: 16px 28px;
+            width: 100%;
+            max-width: 1000px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: var(--shadow-soft);
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .question-meta {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Câu hỏi lớn gấp 3 lần để dễ đọc theo yêu cầu (khoảng 2.4rem) */
+        .question-text {
+            font-size: 2.3rem;
+            line-height: 1.35;
+            font-weight: 700;
+            margin: 0;
+            text-align: center;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            word-break: break-word;
+        }
+
+        /* --- PHẦN 2: ĐÁP ÁN (CÁC Ô CHỮ ẨN) --- */
+        .section-middle {
+            flex-direction: column;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        /* Vùng chứa các từ trong đáp án */
+        .answer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px 24px;
+            max-width: 1100px;
+            padding: 12px;
+        }
+
+        /* Từng từ riêng biệt */
+        .word-box {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Từng ô chữ cái */
+        .char-cell {
+            width: 44px;
+            height: 52px;
+            background: var(--cell-bg-hidden);
+            border: 2px solid var(--cell-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: transparent;
+            text-transform: uppercase;
+            box-shadow: var(--shadow-inset), 0 3px 6px rgba(0,0,0,0.1);
+            user-select: none;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        /* Hiệu ứng lật mở 3D */
+        .char-cell.revealed {
+            background: var(--cell-bg-reveal);
+            border-color: var(--text-main);
+            color: var(--text-main);
+            transform: rotateY(180deg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+        .char-cell.revealed span {
+            transform: rotateY(180deg);
+            display: inline-block;
+        }
+
+        /* Trạng thái xem qua mắt */
+        .char-cell.eye-reveal {
+            background: #fffbeb;
+            border-color: #d2c385;
+            color: #8c7e3e;
+            transform: rotateY(180deg);
+        }
+        .char-cell.eye-reveal span {
+            transform: rotateY(180deg);
+            display: inline-block;
+        }
+
+        /* --- PHẦN 3: BẢNG CHỮ CÁI & CÁC NÚT ĐIỀU KHIỂN --- */
+        .section-bottom {
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        /* Bảng chữ cái */
+        .keyboard-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .keyboard-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* Nút chữ cái */
+        .btn-char {
+            background: var(--btn-active);
+            border: 1px solid var(--cell-border);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            box-shadow: var(--shadow-inset), 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .btn-char:hover:not(:disabled) {
+            transform: translateY(-2px);
+            background: var(--btn-hover);
+            border-color: var(--text-main);
+            box-shadow: var(--shadow-inset), 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn-char:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        /* Nút đã bấm chọn (xám đi) */
+        .btn-char:disabled {
+            background: var(--btn-disabled);
+            border-color: rgba(155, 141, 78, 0.2);
+            color: rgba(61, 55, 29, 0.3);
+            box-shadow: none;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        /* Dòng dưới cùng: con mắt và các nút khác */
+        .utility-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 4px;
+        }
+
+        /* Nút con mắt */
+        .btn-eye {
+            background: var(--bg-panel-solid);
+            border: 2px solid var(--cell-border);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-inset), 0 4px 10px rgba(0,0,0,0.06);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .btn-eye:hover {
+            transform: scale(1.05);
+            background: var(--btn-hover);
+            box-shadow: var(--shadow-inset), 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn-eye.active {
+            background: #fffbeb;
+            border-color: var(--text-main);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn-eye svg {
+            width: 26px;
+            height: 26px;
+            fill: var(--text-main);
+            transition: fill 0.2s ease;
+        }
+
+        .btn-eye.active svg {
+            fill: #b0a158;
+        }
+
+        /* Thông điệp trạng thái */
+        .status-message {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            min-height: 24px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-success {
+            color: #556b2f;
+            font-weight: bold;
+        }
+
+        /* Hoạt họa nhấp nháy chữ mờ ảo */
+        @keyframes text-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 8px rgba(255, 250, 160, 0.5);
+                opacity: 1;
+            }
+            20%, 22%, 24%, 55% {
+                text-shadow: none;
+                opacity: 0.6;
+            }
+        }
+
+        /* Chữ hiển thị thông báo chúc mừng */
+        .celebration-banner {
+            position: absolute;
+            background: rgba(251, 248, 230, 0.96);
+            border: 2px solid var(--text-main);
+            border-radius: 16px;
+            padding: 20px 36px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-soft);
+            display: none;
+            z-index: 100;
+            animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        @keyframes pop-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 2 BÓNG ĐÈN TRÊN TRẦN -->
+    <div class="ceiling-lights">
+        <div class="light-fixture" id="light-1"></div>
+        <div class="light-fixture" id="light-2"></div>
+    </div>
+
+    <!-- PHẦN 1: CÂU HỎI -->
+    <div class="section section-top">
+        <div class="header-controls">
+            <div class="game-title">Chiếc Nón Kỳ Diệu</div>
+            <div class="nav-buttons">
+                <button class="btn-nav" id="btn-prev" onclick="changeQuestion(-1)">← Câu Trước</button>
+                <button class="btn-nav" id="btn-next" onclick="changeQuestion(1)">Câu Tiếp →</button>
+            </div>
+        </div>
+        <div class="question-box" id="question-box">
+            <div class="question-meta">
+                <span id="question-index">CÂU HỎI 1/20</span>
+                <span id="question-category">Chủ nghĩa Mác - Lênin</span>
+            </div>
+            <!-- Cỡ chữ câu hỏi đã được làm lớn hơn gấp 3 lần và căn giữa -->
+            <div class="question-text" id="question-text">Đang tải câu hỏi...</div>
+        </div>
+    </div>
+
+    <!-- PHẦN 2: Ô CHỮ ĐÁP ÁN -->
+    <div class="section section-middle">
+        <div class="answer-container" id="answer-container">
+            <!-- Sẽ sinh các ô chữ từ JS -->
+        </div>
+    </div>
+
+    <!-- PHẦN 3: BÀN PHÍM CHỮ CÁI & ĐIỀU KHIỂN -->
+    <div class="section section-bottom">
+        <div class="keyboard-container" id="keyboard-container">
+            <!-- Sẽ sinh bàn phím chữ cái tiếng Việt từ JS -->
+        </div>
+        <div class="utility-row">
+            <!-- Nút hình con mắt -->
+            <button class="btn-eye" id="btn-eye" onclick="toggleEyeReveal()" title="Xem đáp án">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                </svg>
+            </button>
+            <div class="status-message" id="status-message">Hãy chọn một chữ cái để bắt đầu đoán.</div>
+        </div>
+    </div>
+
+    <!-- Banner chúc mừng chiến thắng câu hỏi -->
+    <div class="celebration-banner" id="celebration-banner">
+        <div>🎉 BẠN ĐÃ GIẢI ĐÁP THÀNH CÔNG! 🎉</div>
+        <div style="font-size: 1rem; font-weight: normal; margin-top: 10px; color: var(--text-muted);" id="celebration-detail"></div>
+    </div>
+
+    <script>
+        // DỮ LIỆU CÂU HỎI TRỰC TIẾP TỪ QA.TXT ĐỂ HỖ TRỢ CHẠY OFFLINE
+        const rawQAData = `PHẦN I. CÂU HỎI TRẮC NGHIỆM LÝ THUYẾT GIÁO TRÌNH
+(10 câu)
+Câu 1
+Theo chủ nghĩa Mác – Lênin, giai cấp công nhân ra đời gắn liền với:
+A. Nền kinh tế nông nghiệp
+B. Nền đại công nghiệp hiện đại
+C. Chế độ phong kiến
+D. Kinh tế tự cung tự cấp
+→ Đáp án: B
+
+Câu 2
+Đặc điểm cơ bản của giai cấp công nhân về phương diện kinh tế – xã hội là:
+A. Sở hữu tư liệu sản xuất chủ yếu
+B. Lao động cá thể
+C. Không sở hữu tư liệu sản xuất chủ yếu
+D. Sống bằng địa tô
+→ Đáp án: C
+
+Câu 3
+Theo Mác – Lênin, giai cấp công nhân sống chủ yếu bằng:
+A. Lợi nhuận
+B. Địa tô
+C. Tiền lương từ việc bán sức lao động
+D. Cổ phần doanh nghiệp
+→ Đáp án: C
+
+Câu 4
+Đặc điểm nào sau đây giúp giai cấp công nhân có khả năng tổ chức cao?
+A. Lao động phân tán
+B. Lao động theo dây chuyền công nghiệp
+C. Sở hữu nhiều ruộng đất
+D. Lao động cá nhân độc lập
+→ Đáp án: B
+
+Câu 5
+Sứ mệnh lịch sử của giai cấp công nhân là:
+A. Bảo vệ chế độ phong kiến
+B. Xây dựng chủ nghĩa tư bản
+C. Xóa bỏ chủ nghĩa tư bản, xây dựng CNXH
+D. Phát triển kinh tế tư nhân
+→ Đáp án: C
+
+Câu 6
+Nội dung kinh tế trong sứ mệnh lịch sử của giai cấp công nhân là:
+A. Xây dựng nền sản xuất hiện đại
+B. Tăng địa tô cho địa chủ
+C. Mở rộng chế độ phong kiến
+D. Xóa bỏ khoa học công nghệ
+→ Đáp án: A
+
+Câu 7
+Đội tiên phong chính trị của giai cấp công nhân là:
+A. Quốc hội
+B. Công đoàn
+C. Đảng Cộng sản
+D. Nhà nước
+→ Đáp án: C
+
+Câu 8
+Một trong những đặc điểm nổi bật của giai cấp công nhân là:
+A. Tính phân tán cao
+B. Tính tổ chức và kỷ luật cao
+C. Sở hữu nhiều tài sản
+D. Lao động độc lập tuyệt đối
+→ Đáp án: B
+
+Câu 9
+Nội dung văn hóa – tư tưởng của sứ mệnh lịch sử giai cấp công nhân là:
+A. Truyền bá mê tín dị đoan
+B. Xây dựng hệ giá trị tiến bộ
+C. Bảo vệ tư tưởng phong kiến
+D. Tách rời khoa học công nghệ
+→ Đáp án: B
+
+Câu 10
+Theo chủ nghĩa Mác – Lênin, giai cấp công nhân có tính quốc tế vì:
+A. Có lợi ích cơ bản tương đồng ở nhiều quốc gia
+B. Sở hữu nhiều công ty đa quốc gia
+C. Không chịu ảnh hưởng của kinh tế
+D. Chỉ làm việc ở nước ngoài
+→ Đáp án: A
+
+PHẦN II. CÂU HỎI TRẮC NGHIỆM LIÊN HỆ NỘI DUNG ĐÃ SOẠN
+(10 câu)
+Câu 11
+Trong nền kinh tế số, yếu tố nào được xem là tư liệu sản xuất chủ yếu?
+A. Xe máy cá nhân
+B. Điện thoại
+C. Nền tảng số và dữ liệu
+D. Đồng phục shipper
+→ Đáp án: C
+
+Câu 12
+Theo góc nhìn Mác – Lênin, tài xế công nghệ vẫn phụ thuộc vào:
+A. Gia đình
+B. Nền tảng công nghệ và thuật toán
+C. Thời tiết
+D. Người thân
+→ Đáp án: B
+
+Câu 13
+“Algorithmic management” nghĩa là:
+A. Quản lý bằng cảm xúc
+B. Quản lý bằng thuật toán
+C. Quản lý thủ công
+D. Quản lý bằng giấy tờ
+→ Đáp án: B
+
+Câu 14
+Điểm nào sau đây khiến lao động nền tảng khác công nhân truyền thống?
+A. Đều bán sức lao động
+B. Đều cần thu nhập
+C. Lao động nền tảng phân tán và linh hoạt hơn
+D. Đều chịu áp lực công việc
+→ Đáp án: C
+
+Câu 15
+Doanh nghiệp nền tảng thường gọi tài xế công nghệ là:
+A. Công chức
+B. Đối tác
+C. Cán bộ
+D. Chủ doanh nghiệp
+→ Đáp án: B
+
+Câu 16
+Một khó khăn của lao động nền tảng trong việc hình thành ý thức giai cấp là:
+A. Làm việc tập trung
+B. Có công đoàn mạnh
+C. Tính cá nhân hóa cao
+D. Sở hữu doanh nghiệp riêng
+→ Đáp án: C
+
+Câu 17
+Freelancer nào dưới đây có tính độc lập cao hơn công nhân truyền thống?
+A. Người chạy xe công nghệ phụ thuộc app
+B. Designer freelance tự tìm khách hàng
+C. Công nhân dây chuyền sản xuất
+D. Lao động thời vụ nhà máy
+→ Đáp án: B
+
+Câu 18
+Điểm giống giữa công nhân truyền thống và lao động nền tảng là:
+A. Đều sở hữu tư liệu sản xuất chủ yếu
+B. Đều bán sức lao động để kiếm sống
+C. Đều làm việc trong nhà máy
+D. Đều có hợp đồng dài hạn
+→ Đáp án: B
+
+Câu 19
+Trong chủ nghĩa tư bản số, yếu tố nào tạo nên quyền lực của doanh nghiệp nền tảng?
+A. Địa tô
+B. Dữ liệu và thuật toán
+C. Ruộng đất
+D. Vũ khí
+→ Đáp án: B
+
+Câu 20
+Nhận định nào phù hợp nhất với lao động nền tảng hiện nay?
+A. Giai cấp công nhân đã biến mất hoàn toàn
+B. Lao động nền tảng không liên quan đến công nhân hiện đại
+C. Giai cấp công nhân đang biến đổi hình thức trong thời đại số
+D. AI đã thay thế hoàn toàn lao động con người
+→ Đáp án: C`;
+
+        // BẢNG CHỮ CÁI TIẾNG VIỆT 29 CHỮ CÁI CHUẨN (KHÔNG DẤU THANH)
+        const VIETNAMESE_ALPHABET = [
+            ['a', 'ă', 'â', 'b', 'c', 'd', 'đ', 'e', 'ê', 'g'],
+            ['h', 'i', 'k', 'l', 'm', 'n', 'o', 'ô', 'ơ', 'p'],
+            ['q', 'r', 's', 't', 'u', 'ư', 'v', 'x', 'y']
+        ];
+
+        // Hàm phân loại để hiển thị chủ đề câu hỏi
+        function getQuestionCategory(id) {
+            return id <= 10 ? "Lý thuyết giáo trình (Mác - Lênin)" : "Liên hệ thực tế & Kinh tế số";
+        }
+
+        // BỘ PARSER DỮ LIỆU QA.TXT
+        function parseQuestions(text) {
+            const parsed = [];
+            const regex = /Câu\s+(\d+)[\r\n]+([\s\S]*?)(?=Câu\s+\d+|$)/gi;
+            let match;
+            
+            while ((match = regex.exec(text)) !== null) {
+                const num = parseInt(match[1]);
+                const block = match[2].trim();
+                const lines = block.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+                
+                let questionText = "";
+                const options = {};
+                let answerKey = "";
+                
+                let optionsStarted = false;
+                for (let line of lines) {
+                    if (/^[A-D]\./i.test(line)) {
+                        optionsStarted = true;
+                        const key = line.charAt(0).toUpperCase();
+                        const val = line.substring(2).trim();
+                        options[key] = val;
+                    } else if (/^(→\s*)?Đáp\s*án\s*:\s*([A-D])/i.test(line)) {
+                        const ansMatch = line.match(/(?:Đáp\s*án\s*:\s*|→\s*Đáp\s*án\s*:\s*)([A-D])/i);
+                        if (ansMatch) {
+                            answerKey = ansMatch[1].toUpperCase();
+                        }
+                    } else if (!optionsStarted) {
+                        if (questionText) questionText += "\n";
+                        questionText += line;
+                    }
+                }
+                
+                if (questionText && answerKey && options[answerKey]) {
+                    parsed.push({
+                        id: num,
+                        question: questionText,
+                        options: options,
+                        answerKey: answerKey,
+                        answerText: options[answerKey]
+                    });
+                }
+            }
+            return parsed;
+        }
+
+        // Ánh xạ chữ tiếng Việt có dấu về chữ cái gốc không dấu thanh tương ứng
+        function getBaseChar(char) {
+            const c = char.toLowerCase();
+            
+            // Xóa dấu thanh giữ nguyên ký tự gốc tiếng Việt (a, ă, â, đ, ê, ô, ơ, ư...)
+            if ('aáàảãạ'.includes(c)) return 'a';
+            if ('ăắằẳẵặ'.includes(c)) return 'ă';
+            if ('âấầẩẫậ'.includes(c)) return 'â';
+            if ('eéèẻẽẹ'.includes(c)) return 'e';
+            if ('êếềểễệ'.includes(c)) return 'ê';
+            if ('iíìỉĩị'.includes(c)) return 'i';
+            if ('oóòỏõọ'.includes(c)) return 'o';
+            if ('ôốồổỗộ'.includes(c)) return 'ô';
+            if ('ơớờởỡợ'.includes(c)) return 'ơ';
+            if ('uúùủũụ'.includes(c)) return 'u';
+            if ('ưứừửữự'.includes(c)) return 'ư';
+            if ('yýỳỷỹỵ'.includes(c)) return 'y';
+            if (c === 'đ') return 'đ';
+            
+            return c;
+        }
+
+        // Trạng thái game
+        let questions = [];
+        let currentIndex = 0;
+        let guessedLetters = new Set();
+        let eyeRevealActive = false;
+        let gameCompleted = false;
+
+        // Bắt đầu game
+        window.addEventListener('DOMContentLoaded', () => {
+            questions = parseQuestions(rawQAData);
+            if (questions.length === 0) {
+                document.getElementById('question-text').innerText = "Không thể phân tích dữ liệu câu hỏi. Vui lòng kiểm tra định dạng.";
+                return;
+            }
+            renderKeyboard();
+            loadQuestion(0);
+        });
+
+        // Khởi tạo bàn phím chữ cái
+        function renderKeyboard() {
+            const container = document.getElementById('keyboard-container');
+            container.innerHTML = '';
+            
+            VIETNAMESE_ALPHABET.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'keyboard-row';
+                
+                row.forEach(char => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-char';
+                    btn.innerText = char;
+                    btn.id = `btn-char-${char}`;
+                    btn.onclick = () => guessLetter(char);
+                    rowDiv.appendChild(btn);
+                });
+                container.appendChild(rowDiv);
+            });
+        }
+
+        // Tải câu hỏi hiện tại
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            
+            currentIndex = index;
+            guessedLetters.clear();
+            eyeRevealActive = false;
+            gameCompleted = false;
+            
+            // Cập nhật giao diện điều khiển con mắt và bàn phím
+            document.getElementById('btn-eye').classList.remove('active');
+            document.getElementById('celebration-banner').style.display = 'none';
+            document.getElementById('status-message').innerText = "Hãy chọn một chữ cái để bắt đầu đoán.";
+            document.getElementById('status-message').className = "status-message";
+            
+            // Kích hoạt lại toàn bộ các nút chữ cái
+            document.querySelectorAll('.btn-char').forEach(btn => btn.disabled = false);
+            
+            // Cập nhật điều hướng câu hỏi
+            document.getElementById('btn-prev').disabled = index === 0;
+            document.getElementById('btn-next').disabled = index === questions.length - 1;
+            
+            const q = questions[index];
+            document.getElementById('question-index').innerText = `CÂU HỎI ${q.id}/${questions.length}`;
+            document.getElementById('question-category').innerText = getQuestionCategory(q.id);
+            document.getElementById('question-text').innerText = q.question;
+            
+            // Khởi tạo các ô chữ đáp án ẩn
+            renderAnswerCells(q.answerText);
+        }
+
+        // Render các ô chữ ẩn
+        function renderAnswerCells(answer) {
+            const container = document.getElementById('answer-container');
+            container.innerHTML = '';
+            
+            // Chia đáp án thành các từ
+            const words = answer.split(' ');
+            
+            words.forEach(word => {
+                const wordBox = document.createElement('div');
+                wordBox.className = 'word-box';
+                
+                for (let i = 0; i < word.length; i++) {
+                    const char = word.charAt(i);
+                    const cell = document.createElement('div');
+                    cell.className = 'char-cell';
+                    
+                    // Loại bỏ ký tự đặc biệt khỏi danh sách ô đoán (nếu có, vd dấu phẩy, gạch ngang)
+                    const isLetter = /^[a-zA-Zà-ỹÀ-ỸđĐăĂâÂêÊôÔơƠưƯ]+$/i.test(char);
+                    
+                    if (isLetter) {
+                        cell.dataset.char = char;
+                        cell.dataset.baseChar = getBaseChar(char);
+                        
+                        const span = document.createElement('span');
+                        span.innerText = char;
+                        cell.appendChild(span);
+                    } else {
+                        // Nếu là ký tự đặc biệt (dấu câu), hiển thị trực tiếp
+                        cell.className = 'char-cell revealed';
+                        const span = document.createElement('span');
+                        span.innerText = char;
+                        cell.appendChild(span);
+                    }
+                    wordBox.appendChild(cell);
+                }
+                container.appendChild(wordBox);
+            });
+        }
+
+        // Đoán chữ cái
+        function guessLetter(char) {
+            if (gameCompleted || eyeRevealActive) return;
+            
+            guessedLetters.add(char);
+            
+            // Xám nút trên bàn phím
+            const btn = document.getElementById(`btn-char-${char}`);
+            if (btn) btn.disabled = true;
+            
+            const q = questions[currentIndex];
+            const answer = q.answerText;
+            
+            let foundCount = 0;
+            const cells = document.querySelectorAll('.char-cell:not(.revealed)');
+            
+            cells.forEach(cell => {
+                if (cell.dataset.baseChar === char) {
+                    cell.classList.add('revealed');
+                    foundCount++;
+                }
+            });
+            
+            const statusMsg = document.getElementById('status-message');
+            if (foundCount > 0) {
+                statusMsg.innerText = `Chính xác! Tìm thấy ${foundCount} chữ cái "${char.toUpperCase()}" trong đáp án.`;
+                statusMsg.className = "status-message status-success";
+            } else {
+                statusMsg.innerText = `Tiếc quá! Không có chữ cái "${char.toUpperCase()}" nào trong đáp án.`;
+                statusMsg.className = "status-message";
+            }
+            
+            checkWinningCondition();
+        }
+
+        // Xem toàn bộ đáp án (Nút hình con mắt)
+        function toggleEyeReveal() {
+            if (gameCompleted) return;
+            
+            const btn = document.getElementById('btn-eye');
+            eyeRevealActive = !eyeRevealActive;
+            
+            const cells = document.querySelectorAll('.char-cell');
+            
+            if (eyeRevealActive) {
+                btn.classList.add('active');
+                cells.forEach(cell => {
+                    if (!cell.classList.contains('revealed')) {
+                        cell.classList.add('eye-reveal');
+                    }
+                });
+                document.getElementById('status-message').innerText = "Chế độ xem đáp án đang bật.";
+            } else {
+                btn.classList.remove('active');
+                cells.forEach(cell => {
+                    cell.classList.remove('eye-reveal');
+                });
+                document.getElementById('status-message').innerText = "Chế độ xem đáp án đã tắt.";
+            }
+        }
+
+        // Kiểm tra điều kiện chiến thắng
+        function checkWinningCondition() {
+            // Đáp án được giải hoàn toàn khi không còn ô chữ nào bị ẩn
+            const unrevealedCells = document.querySelectorAll('.char-cell:not(.revealed)');
+            
+            if (unrevealedCells.length === 0) {
+                gameCompleted = true;
+                
+                const q = questions[currentIndex];
+                
+                // Hiện banner chúc mừng
+                const detail = document.getElementById('celebration-detail');
+                detail.innerText = `Đáp án đúng là: ${q.answerText}`;
+                
+                const banner = document.getElementById('celebration-banner');
+                banner.style.display = 'block';
+                
+                // Căn giữa banner trên màn hình
+                banner.style.left = `${(window.innerWidth - banner.offsetWidth) / 2}px`;
+                banner.style.top = `${(window.innerHeight - banner.offsetHeight) / 2}px`;
+            }
+        }
+
+        // Chuyển đổi câu hỏi
+        function changeQuestion(step) {
+            const nextIndex = currentIndex + step;
+            if (nextIndex >= 0 && nextIndex < questions.length) {
+                loadQuestion(nextIndex);
+            }
+        }
+    </script>
+</body>
+</html>

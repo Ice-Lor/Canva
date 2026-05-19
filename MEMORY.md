@@ -71,3 +71,20 @@ Dự án áp dụng nguyên tắc tối giản nhưng mang tính cao cấp (Prem
   - **Một Cần cẩu Hoạt động (`Cần_cẩu.gif`)**: Đặt ở vị trí trung tâm bãi cảng, liên tục tái hiện hoạt họa tời bốc dỡ hàng hóa chân thực.
   - **Hai Làn Xe Container (`Xe_Container.png`)**: Di chuyển ngược xuôi liên tục trên làn đường cảng. Do hình ảnh gốc có hướng cabin quay sang trái, xe chạy từ trái sang phải được áp dụng lớp `truck-facing-right` (`transform: scaleX(-1)`) để quay đầu, trong khi xe chạy từ phải sang trái giữ nguyên lớp `truck-facing-left` (`transform: scaleX(1)`), bảo đảm cả hai luồng xe đều di chuyển tiến về phía trước một cách hợp lý và đẹp mắt.
 - **An Toàn Tương tác**: Toàn bộ container hoạt họa được đặt thuộc tính `pointer-events: none` và `aria-hidden="true"`, bảo đảm tuyệt đối không cản trở thao tác nhấp chuột của người dùng vào bảng chữ hay nút gỡ lỗi.
+
+---
+
+## 7. Trò chơi Chiếc nón kỳ diệu (`cnkd.html`)
+- **Mục tiêu**: Tạo trò chơi đoán chữ cái "Chiếc nón kỳ diệu" tích hợp đầy đủ trong một file HTML, thiết kế theo chủ đề **Backroom Level 0** hoài cổ và huyền bí.
+- **Phong cách & Phông chữ**: Áp dụng phông chữ **Poppins** (Google Fonts) giống như trên Canva để mang lại giao diện hiện đại, trực quan và chuyên nghiệp.
+- **2 Bóng Đèn Huỳnh Quang**: Thêm 2 bóng đèn huỳnh quang nằm ngang sát trần trên cùng với hiệu ứng chớp tắt liên tục bằng CSS animation (`bulb-flicker`), tạo cảm giác không gian Backroom ẩm mốc đặc trưng.
+- **Cấu trúc Giao diện**: Màn hình được chia làm 3 phần ngang bằng nhau (33.33vh mỗi phần):
+  - **Phần trên**: Hiển thị tiêu đề trò chơi, bộ nút điều hướng (Câu trước/Câu sau) và hộp câu hỏi chứa số thứ tự câu, chủ đề câu hỏi, và nội dung câu hỏi được phóng to gấp 3 lần (cỡ chữ 2.3rem) giúp người dùng cực kỳ dễ đọc. Không còn hiển thị các phương án trắc nghiệm (A, B, C, D) gây loãng giao diện.
+  - **Phần giữa**: Hiển thị đáp án dưới dạng các ô vuông ẩn. Các ô được phân tách theo từng từ để bảo toàn hiển thị không bị ngắt dòng sai vị trí.
+  - **Phần dưới**: Bảng chữ cái tiếng Việt tương tác (29 chữ cái không dấu thanh: a, ă, â, đ, ê, ô, ơ, ư,...) và nút tiện ích.
+- **Cơ chế Gameplay**:
+  - **Đoán chữ**: Khi người dùng nhấn nút chữ cái không dấu, hệ thống tự động ánh xạ và lật mở toàn bộ các ô chữ có ký tự gốc tương đương (ví dụ bấm nút **A** sẽ mở các ô chứa `a, á, à, ả, ã, ạ`). Nút đã bấm sẽ bị vô hiệu hóa (xám đi).
+  - **Xem đáp án (Nút con mắt)**: Một nút hình con mắt nằm ở dưới cùng cho phép lật mở nhanh toàn bộ đáp án khi được kích hoạt (dưới dạng các ô màu vàng nhạt `eye-reveal`).
+  - **Banner chiến thắng**: Khi đoán trúng tất cả chữ cái, một banner chúc mừng sẽ hiển thị ở giữa màn hình và hiển thị đáp án đúng để người chơi nắm được.
+  - **Parser Dữ liệu tự động**: Tích hợp chuỗi raw của `QA.txt` vào mã nguồn JS để phân tích tự động khi tải trang, đảm bảo trò chơi có thể chạy độc lập, offline không bị ảnh hưởng bởi lỗi CORS.
+
